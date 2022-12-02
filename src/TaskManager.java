@@ -2,36 +2,32 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class TaskManager {
-    int counterID = 0; // счетчик для номеров задач
-    String[] taskStatus = new String[]{"NEW", "IN_PROGRESS", "DONE"};
-
+   private int counterId = 0; // счетчик для номеров задач
 
     //Коллекции для хранания Задач и Эпиков.
     HashMap<Integer, Task> tasks = new HashMap<>();
     // Подзадачи эпиков хранятся в полях самого эпика
     HashMap<Integer, EpicTask> epicTasks = new HashMap<>();
 
-    // Вернуть список обычных задач
-    ArrayList<Object> findAllTasks() {
-        ArrayList<Object> tasksList = new ArrayList<>();
+    // 3 метода для возврата задач/эпиков/сабов
+    ArrayList<Task> findAllTasks() {
+        ArrayList<Task> tasksList = new ArrayList<>();
         for (Integer id : tasks.keySet()) {
             tasksList.add(tasks.get(id));
         }
         return tasksList;
     }
 
-    // Вернуть список Эпиков
-    ArrayList<Object> findAllEpicTasks() {
-        ArrayList<Object> epicTasksList = new ArrayList<>();
+    ArrayList<EpicTask> findAllEpicTasks() {
+        ArrayList<EpicTask> epicTasksList = new ArrayList<>();
         for (Integer id : epicTasks.keySet()) {
             epicTasksList.add(epicTasks.get(id));
         }
         return epicTasksList;
     }
 
-    // Вернуть список подзадач
-    ArrayList<Object> findAllSubTasks() {
-        ArrayList<Object> subTasksList = new ArrayList<>();
+    ArrayList<SubTask> findAllSubTasks() {
+        ArrayList<SubTask> subTasksList = new ArrayList<>();
         for (EpicTask epicTask : epicTasks.values()) {
             for (Integer id : epicTask.subTasks.keySet()) {
                 subTasksList.add(epicTask.subTasks.get(id));
@@ -41,167 +37,159 @@ public class TaskManager {
     }
 
     //Вернить список подзадач конкретного эпика
-    ArrayList<Object> findTasksOfEpic(EpicTask epic) {
-        ArrayList<Object> subTasksList = new ArrayList<>();
+    ArrayList<SubTask> findTasksOfEpic(EpicTask epic) {
+        ArrayList<SubTask> subTasksList = new ArrayList<>();
         for (Integer id : epic.subTasks.keySet()) {
             subTasksList.add(epic.subTasks.get(id));
         }
         return subTasksList;
     }
 
-    // Очистка от обычных задач
+    // Методы для очистки от обычных задач/эпиков, сабов
     void clearTask() {
         tasks.clear();
     }
 
-    // Очистка от Эпиков ( и соответственно подзадач)
     void clearEpicTask() {
         epicTasks.clear();
     }
 
-    // Очистка только списка подзадач
     void clearSubTask() {
         for (EpicTask task : epicTasks.values()) {
             task.subTasks.clear();
         }
     }
 
-    // Получение обычной задачи по номеру
-    Task getUniqTask(int uniqID) {
-        if (tasks.containsKey(uniqID)) {
-            return tasks.get(uniqID);
+    // Получение по АйДи задачи, эпика, саба
+    Task getUniqTask(int uniqId) {
+        if (tasks.containsKey(uniqId)) {
+            return tasks.get(uniqId);
         }
         System.out.println("Нет задачи с таким номером");
         return null;
     }
 
-    // Получение эпика по номеру
-    EpicTask getUniqEpicTask(int uniqID) {
-        if (epicTasks.containsKey(uniqID)) {
-            return epicTasks.get(uniqID);
+    EpicTask getUniqEpicTask(int uniqId) {
+        if (epicTasks.containsKey(uniqId)) {
+            return epicTasks.get(uniqId);
         }
         System.out.println("Нет задачи с таким номером");
         return null;
     }
 
-    // Получение подзадачи по номеру
-    SubTask getUniqSubTask(int uniqID) {
+    SubTask getUniqSubTask(int uniqId) {
         for (EpicTask task : epicTasks.values()) {
-            if (task.subTasks.containsKey(uniqID)) {
-                return task.subTasks.get(uniqID);
+            if (task.subTasks.containsKey(uniqId)) {
+                return task.subTasks.get(uniqId);
             }
         }
         System.out.println("Нет задачи с таким номером");
         return null;
     }
 
-    // создание задачи
+    // создание задачи, эпика, саба
     void createNewTask(Task task) {
-        tasks.put(++counterID, task);
-        task.setStatus(taskStatus[0]);
-        task.setUniqID(counterID);
+        tasks.put(++counterId, task);
+        task.setStatus(TaskStatus.NEW);
+        task.setUniqId(counterId);
     }
 
-    // создание эпика
     void createNewEpicTask(EpicTask task) {
-        epicTasks.put(++counterID, task);
-        task.setStatus(taskStatus[0]);
-        task.setUniqID(counterID);
+        epicTasks.put(++counterId, task);
+        task.setStatus(TaskStatus.NEW);
+        task.setUniqId(counterId);
     }
 
-    // создание подзадачи
     void createNewSubTask(SubTask task, EpicTask epicTask) {
-        task.epicID = epicTask.getUniqID();
-        epicTask.subTasks.put(++counterID, task);
-        task.setStatus(taskStatus[0]);
-        task.setUniqID(counterID);
+        task.epicId = epicTask.getUniqId();
+        epicTask.subTasks.put(++counterId, task);
+        task.setStatus(TaskStatus.NEW);
+        task.setUniqId(counterId);
     }
-    // обновление обычной задачи, параметры метода - АйДи номер задачи, новое имя, новое описание и новый статус
-    void updateTask(int uniqID, String name, String description, String status) {
-        if (tasks.containsKey(uniqID)) {
-            tasks.get(uniqID).name = name;
-            tasks.get(uniqID).description = description;
-            tasks.get(uniqID).setStatus(status);
+
+    // обновление обычной задачи, эпика, саба
+    void updateTask(Task task) {
+        if (tasks.containsKey(task.getUniqId())) {
+            tasks.get(task.getUniqId()).name = task.name;
+            tasks.get(task.getUniqId()).description = task.description;
+            tasks.get(task.getUniqId()).setStatus(task.getStatus());
         } else {
-            System.out.println("Нет задачи с таким номером");
+            System.out.println("Нет такой задачи");
         }
     }
-    // Обновление эпика, параметры метода - АйДи номер задачи, новое имя, новое описание
-    void updateEpicTask(int uniqID, String name, String description) {
-        if (epicTasks.containsKey(uniqID)) {
-            epicTasks.get(uniqID).name = name;
-            epicTasks.get(uniqID).description = description;
+
+    void updateEpicTask(EpicTask task) {
+        if (epicTasks.containsKey(task.getUniqId())) {
+            epicTasks.get(task.getUniqId()).name = task.name;
+            epicTasks.get(task.getUniqId()).description = task.description;
+        } else {
+            System.out.println("Нет такого эпика");
+        }
+    }
+
+    void updateSubTask(SubTask task) {
+        for (EpicTask epic : epicTasks.values()) {
+            if (epic.subTasks.containsKey(task.getUniqId())) {
+                epic.subTasks.get(task.getUniqId()).name = task.name;
+                epic.subTasks.get(task.getUniqId()).description = task.description;
+                epic.subTasks.get(task.getUniqId()).setStatus(task.getStatus());
+                checkStatus(epic);
+            } else {
+                System.out.println("Нет такй подзадачи");
+            }
+        }
+    }
+
+    // удалить обычное задание, эпик, саб
+    void removeTask(int uniqId) {
+        if (tasks.containsKey(uniqId)) {
+            tasks.remove(uniqId);
         } else {
             System.out.println("Нет задачи с таким номером");
         }
     }
 
-    // Обновление эпика, параметры метода - АйДи номер задачи, новое имя, новое описание и новый статус
-    void updateSubTask(int uniqID, String name, String description, String status) {
-        for (EpicTask task : epicTasks.values()) {
-            if (task.subTasks.containsKey(uniqID)) {
-                task.subTasks.get(uniqID).name = name;
-                task.subTasks.get(uniqID).description = description;
-                task.subTasks.get(uniqID).setStatus(status);
 
-                // Тут должно происходить управление статусом эпика. Решения умнее я не придумал чем вбить статусы в одну
-                // строку, и искать по наименованию
-                String subStatus = "";
-                for (SubTask subTask : task.subTasks.values()) {
-                    subStatus += subTask.getStatus();
-                }
-                if (!subStatus.contains(taskStatus[0]) && (!subStatus.contains(taskStatus[1]))) {
-                    task.setStatus(taskStatus[2]);
-                } else if (!subStatus.contains(taskStatus[2]) && (!subStatus.contains(taskStatus[1]))) {
-                    task.setStatus(taskStatus[0]);
-                } else {
-                    task.setStatus(taskStatus[1]);
-                }
+    void removeEpicTask(int uniqId) {
+        if (epicTasks.containsKey(uniqId)) {
+            epicTasks.remove(uniqId);
+        } else {
+            System.out.println("Нет задачи с таким номером");
+        }
+    }
+
+
+    void removeSubTask(int uniqId) {
+        for (EpicTask epic : epicTasks.values()) {
+            if (epic.subTasks.containsKey(uniqId)) {
+                epic.subTasks.remove(uniqId);
+                checkStatus(epic);
             } else {
                 System.out.println("Нет задачи с таким номером");
             }
         }
     }
 
-    // удалить обычное задание
-    void removeTask(int uniqID) {
-        if (tasks.containsKey(uniqID)) {
-            tasks.remove(uniqID);
-        } else {
-            System.out.println("Нет задачи с таким номером");
-        }
-    }
 
-    //удалить эпик
-    void removeEpicTask(int uniqID) {
-        if (epicTasks.containsKey(uniqID)) {
-            epicTasks.remove(uniqID);
-        } else {
-            System.out.println("Нет задачи с таким номером");
-        }
-    }
-
-    //удалить подзадачу
-    void removeSubTask(int uniqID) {
-        for (EpicTask task : epicTasks.values()) {
-            if (task.subTasks.containsKey(uniqID)) {
-                task.subTasks.remove(uniqID);
-                // ниже происходит такое же костыльное обновление статуса эпика.
-                String status = "";
-                for (SubTask subTask : task.subTasks.values()) {
-                    status += subTask.getStatus();
-                }
-                if (!status.contains(taskStatus[0]) && (!status.contains(taskStatus[1]))) {
-                    task.setStatus(taskStatus[2]);
-                } else if (!status.contains(taskStatus[2]) && (!status.contains(taskStatus[1]))) {
-                    task.setStatus(taskStatus[0]);
-                } else {
-                    task.setStatus(taskStatus[1]);
-                }
-
+    /*Метод для проверки и изменения при необходимости статуса эпика
+    * Принмает эпик, проверяет на наличие разных статусов подзадач, присваивает статус эпику*/
+    void checkStatus(EpicTask epic) {
+        boolean isNew = false;
+        boolean isInProgress = false;
+        boolean isDone = false;
+        for (SubTask subTask : epic.subTasks.values()) {
+            if ((!isNew) && (subTask.getStatus() == (TaskStatus.NEW))) isNew = true;
+            if (!isInProgress && subTask.getStatus() == (TaskStatus.IN_PROGRESS)) isInProgress = true;
+            if (!isDone && subTask.getStatus() == (TaskStatus.DONE)) isDone = true;
+            if (isNew && !isInProgress && !isDone) {
+                epic.setStatus(TaskStatus.NEW);
+            } else if ((!isNew && !isInProgress && isDone)) {
+                epic.setStatus(TaskStatus.DONE);
             } else {
-                System.out.println("Нет задачи с таким номером");
+                epic.setStatus(TaskStatus.IN_PROGRESS);
             }
         }
     }
+
+
 }

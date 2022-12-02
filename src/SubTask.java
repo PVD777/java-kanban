@@ -1,15 +1,15 @@
 public class SubTask extends Task {
-    int epicID;
+    protected int epicId;
 
-    public SubTask(String name, String description) {
+    protected SubTask(String name, String description) {
         super(name, description);
     }
 
     @Override
     public String toString() {
         return "SubTask{" +
-                "uniqID=" + getUniqID() +
-                ", epicID='" + epicID + '\'' +
+                "uniqID=" + getUniqId() +
+                ", epicID='" + epicId + '\'' +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", status='" + getStatus() + '\'' +

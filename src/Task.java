@@ -1,33 +1,38 @@
 public class Task {
-    private int uniqID;
+    private int uniqId;
     String name;
     String description;
-    private String status;
-    public Task(String name, String description) {
+    //private String status;
+    private TaskStatus status;
+    protected Task(String name, String description) {
         this.name = name;
         this.description = description;
     }
 
-    public int getUniqID() {
-        return uniqID;
+    public int getUniqId() {
+        return uniqId;
     }
 
-    public String getStatus() {
+
+    public void setUniqId(int uniqID) {
+        this.uniqId = uniqID;
+    }
+
+
+
+    public void setStatus(TaskStatus status) {
+        this.status = status;
+    }
+
+    public TaskStatus getStatus() {
         return status;
     }
 
-    public void setUniqID(int uniqID) {
-        this.uniqID = uniqID;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
 
     @Override
     public String toString() {
         return "Task{" +
-                "uniqID=" + uniqID +
+                "uniqID=" + uniqId +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", status='" + status + '\'' +
