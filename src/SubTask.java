@@ -1,8 +1,16 @@
 public class SubTask extends Task {
-    protected int epicId;
+    private int epicId;
 
-    protected SubTask(String name, String description) {
+     SubTask(String name, String description) {
         super(name, description);
+    }
+
+    public int getEpicId() {
+        return epicId;
+    }
+
+    public void setEpicId(int epicId) {
+        this.epicId = epicId;
     }
 
     @Override
@@ -10,8 +18,8 @@ public class SubTask extends Task {
         return "SubTask{" +
                 "uniqID=" + getUniqId() +
                 ", epicID='" + epicId + '\'' +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
+                ", name='" + getName() + '\'' +
+                ", description='" + getDescription() + '\'' +
                 ", status='" + getStatus() + '\'' +
                 '}';
     }

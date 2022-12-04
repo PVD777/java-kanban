@@ -1,8 +1,7 @@
 public class Task {
     private int uniqId;
-    String name;
-    String description;
-    //private String status;
+    private String name;
+    private String description;
     private TaskStatus status;
     protected Task(String name, String description) {
         this.name = name;
@@ -18,7 +17,21 @@ public class Task {
         this.uniqId = uniqID;
     }
 
+    public String getName() {
+        return name;
+    }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     public void setStatus(TaskStatus status) {
         this.status = status;
@@ -27,7 +40,6 @@ public class Task {
     public TaskStatus getStatus() {
         return status;
     }
-
 
     @Override
     public String toString() {

@@ -22,8 +22,8 @@ public class Main {
         System.out.println(taskManager.findAllTasks());
 
         System.out.println("Обновляю простую задачу");
-        taskOne.name = "Новое название";
-        taskOne.description = "Новое описание";
+        taskOne.setName("Новое название");
+        taskOne.setDescription("Новое описание");
         taskOne.setStatus(TaskStatus.DONE);
         taskManager.updateTask(taskOne);
         System.out.println(taskManager.findAllTasks());
@@ -42,15 +42,15 @@ public class Main {
 
         System.out.println("Обновляю подзадачу");
 
-        subTaskOne.name = "Задача посложнее";
-        subTaskOne.description = "Описание посложнее";
+        subTaskOne.setName("Задача посложнее");
+        subTaskOne.setDescription("Описание посложнее");
         subTaskOne.setStatus(TaskStatus.DONE);
         taskManager.updateSubTask(subTaskOne);
         System.out.println(taskManager.findAllEpicTasks());
 
         System.out.println("Обновляю другую подзадачу того же эпика");
-        subTaskTwo.name = "Очень сложно";
-        subTaskTwo.description = "придумывать описания";
+        subTaskTwo.setName("Очень сложно");
+        subTaskTwo.setDescription("придумывать описания");
         subTaskTwo.setStatus(TaskStatus.DONE);
         taskManager.updateSubTask(subTaskTwo);
         System.out.println(taskManager.findAllEpicTasks());
