@@ -1,7 +1,9 @@
+package TasksType;
+
 public class SubTask extends Task {
     private int epicId;
 
-     SubTask(String name, String description) {
+    public SubTask(String name, String description) {
         super(name, description);
     }
 
@@ -15,7 +17,7 @@ public class SubTask extends Task {
 
     @Override
     public String toString() {
-        return "SubTask{" +
+        return "TasksType.SubTask{" +
                 "uniqID=" + getUniqId() +
                 ", epicID='" + epicId + '\'' +
                 ", name='" + getName() + '\'' +

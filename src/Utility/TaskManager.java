@@ -1,8 +1,14 @@
+package Utility;
+
+import TasksType.EpicTask;
+import TasksType.SubTask;
+import TasksType.Task;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class TaskManager {
-   private static int counterId = 0; // счетчик для номеров задач
+    private static int counterId = 0; // счетчик для номеров задач
 
     //Коллекции для хранания Задач и Эпиков.
     HashMap<Integer, Task> tasks = new HashMap<>();
@@ -10,7 +16,7 @@ public class TaskManager {
     HashMap<Integer, EpicTask> epicTasks = new HashMap<>();
 
     // 3 метода для возврата задач/эпиков/сабов
-     public ArrayList<Task> findAllTasks() {
+    public ArrayList<Task> findAllTasks() {
         ArrayList<Task> tasksList = new ArrayList<>();
         for (Integer id : tasks.keySet()) {
             tasksList.add(tasks.get(id));
@@ -133,7 +139,7 @@ public class TaskManager {
                 epic.subTasks.get(task.getUniqId()).setName(task.getName());
                 epic.subTasks.get(task.getUniqId()).setDescription(task.getDescription());
                 epic.subTasks.get(task.getUniqId()).setStatus(task.getStatus());
-                checkStatus(epic);
+                epic.checkStatus(epic);
             } else {
                 System.out.println("Нет такй подзадачи");
             }
@@ -161,30 +167,12 @@ public class TaskManager {
         for (EpicTask epic : epicTasks.values()) {
             if (epic.subTasks.containsKey(uniqId)) {
                 epic.subTasks.remove(uniqId);
-                checkStatus(epic);
+                epic.checkStatus(epic);
             } else {
                 System.out.println("Нет задачи с таким номером");
             }
         }
     }
 
-    /*Метод для проверки и изменения при необходимости статуса эпика
-    * Принмает эпик, проверяет на наличие разных статусов подзадач, присваивает статус эпику*/
-    public void checkStatus(EpicTask epic) {
-        boolean isNew = false;
-        boolean isInProgress = false;
-        boolean isDone = false;
-        for (SubTask subTask : epic.subTasks.values()) {
-            if ((!isNew) && (subTask.getStatus() == (TaskStatus.NEW))) isNew = true;
-            if (!isInProgress && subTask.getStatus() == (TaskStatus.IN_PROGRESS)) isInProgress = true;
-            if (!isDone && subTask.getStatus() == (TaskStatus.DONE)) isDone = true;
-            if (isNew && !isInProgress && !isDone) {
-                epic.setStatus(TaskStatus.NEW);
-            } else if ((!isNew && !isInProgress && isDone)) {
-                epic.setStatus(TaskStatus.DONE);
-            } else {
-                epic.setStatus(TaskStatus.IN_PROGRESS);
-            }
-        }
-    }
+
 }

@@ -1,9 +1,14 @@
+package TasksType;
+
+import Utility.TaskStatus;
+
 public class Task {
     private int uniqId;
     private String name;
     private String description;
     private TaskStatus status;
-    protected Task(String name, String description) {
+
+    public Task(String name, String description) {
         this.name = name;
         this.description = description;
     }
@@ -43,7 +48,7 @@ public class Task {
 
     @Override
     public String toString() {
-        return "Task{" +
+        return "TasksType.Task{" +
                 "uniqID=" + uniqId +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
