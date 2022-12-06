@@ -1,6 +1,6 @@
-package TasksType;
+package model;
 
-import Utility.TaskStatus;
+import service.TaskStatus;
 
 public class Task {
     private int uniqId;

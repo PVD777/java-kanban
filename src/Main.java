@@ -1,6 +1,6 @@
-import TasksType.*;
-import Utility.TaskManager;
-import Utility.TaskStatus;
+import model.*;
+import service.TaskManager;
+import service.TaskStatus;
 
 public class Main {
     public static void main(String[] args) {

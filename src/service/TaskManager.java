@@ -1,8 +1,6 @@
-package Utility;
+package service;
 
-import TasksType.EpicTask;
-import TasksType.SubTask;
-import TasksType.Task;
+import model.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,8 +33,8 @@ public class TaskManager {
     public ArrayList<SubTask> findAllSubTasks() {
         ArrayList<SubTask> subTasksList = new ArrayList<>();
         for (EpicTask epicTask : epicTasks.values()) {
-            for (Integer id : epicTask.subTasks.keySet()) {
-                subTasksList.add(epicTask.subTasks.get(id));
+            for (Integer id : epicTask.getSubTasks().keySet()) {
+                subTasksList.add(epicTask.getSubTasks().get(id));
             }
         }
         return subTasksList;
@@ -45,8 +43,8 @@ public class TaskManager {
     //Вернить список подзадач конкретного эпика
     public ArrayList<SubTask> findTasksOfEpic(EpicTask epic) {
         ArrayList<SubTask> subTasksList = new ArrayList<>();
-        for (Integer id : epic.subTasks.keySet()) {
-            subTasksList.add(epic.subTasks.get(id));
+        for (Integer id : epic.getSubTasks().keySet()) {
+            subTasksList.add(epic.getSubTasks().get(id));
         }
         return subTasksList;
     }
@@ -62,7 +60,7 @@ public class TaskManager {
 
     public void clearSubTask() {
         for (EpicTask task : epicTasks.values()) {
-            task.subTasks.clear();
+            task.getSubTasks().clear();
         }
     }
 
@@ -85,8 +83,8 @@ public class TaskManager {
 
     public SubTask getUniqSubTask(int uniqId) {
         for (EpicTask task : epicTasks.values()) {
-            if (task.subTasks.containsKey(uniqId)) {
-                return task.subTasks.get(uniqId);
+            if (task.getSubTasks().containsKey(uniqId)) {
+                return task.getSubTasks().get(uniqId);
             }
         }
         System.out.println("Нет задачи с таким номером");
@@ -108,7 +106,7 @@ public class TaskManager {
 
     public void createNewSubTask(SubTask task, EpicTask epicTask) {
         task.setEpicId(epicTask.getUniqId());
-        epicTask.subTasks.put(++counterId, task);
+        epicTask.getSubTasks().put(++counterId, task);
         task.setStatus(TaskStatus.NEW);
         task.setUniqId(counterId);
     }
@@ -135,10 +133,10 @@ public class TaskManager {
 
     public void updateSubTask(SubTask task) {
         for (EpicTask epic : epicTasks.values()) {
-            if (epic.subTasks.containsKey(task.getUniqId())) {
-                epic.subTasks.get(task.getUniqId()).setName(task.getName());
-                epic.subTasks.get(task.getUniqId()).setDescription(task.getDescription());
-                epic.subTasks.get(task.getUniqId()).setStatus(task.getStatus());
+            if (epic.getSubTasks().containsKey(task.getUniqId())) {
+                epic.getSubTasks().get(task.getUniqId()).setName(task.getName());
+                epic.getSubTasks().get(task.getUniqId()).setDescription(task.getDescription());
+                epic.getSubTasks().get(task.getUniqId()).setStatus(task.getStatus());
                 epic.checkStatus(epic);
             } else {
                 System.out.println("Нет такй подзадачи");
@@ -165,8 +163,8 @@ public class TaskManager {
 
     public void removeSubTask(int uniqId) {
         for (EpicTask epic : epicTasks.values()) {
-            if (epic.subTasks.containsKey(uniqId)) {
-                epic.subTasks.remove(uniqId);
+            if (epic.getSubTasks().containsKey(uniqId)) {
+                epic.getSubTasks().remove(uniqId);
                 epic.checkStatus(epic);
             } else {
                 System.out.println("Нет задачи с таким номером");
