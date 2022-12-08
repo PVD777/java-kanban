@@ -1,10 +1,17 @@
 import model.*;
-import service.TaskManager;
-import service.TaskStatus;
+import service.*;
+import Utility.Managers;
+
+import static Utility.Managers.getDefaultHistory;
 
 public class Main {
     public static void main(String[] args) {
-        TaskManager taskManager = new TaskManager();
+
+        //InMemoryTaskManager taskManager = new InMemoryTaskManager();
+        //InMemoryHistoryManager historyManager = new InMemoryHistoryManager();
+        HistoryManager historyManager = Managers.getDefaultHistory();
+        TaskManager taskManager = Managers.getDefault();
+
 
         Task taskOne = new Task("Название", "Описание");
         Task taskTwo = new Task("Еще одна название", "А тут еще одно описание");
@@ -58,5 +65,20 @@ public class Main {
         subTaskTwo.setStatus(TaskStatus.DONE);
         taskManager.updateSubTask(subTaskTwo);
         System.out.println(taskManager.findAllEpicTasks());
+
+        System.out.println("Сделам несколько запросов, и выведем историю");
+        taskManager.getTask(1);
+        taskManager.getEpicTask(3);
+        taskManager.getSubTask(4);
+        taskManager.getTask(1);
+        taskManager.getEpicTask(3);
+        taskManager.getSubTask(4);
+        taskManager.getTask(1);
+        taskManager.getEpicTask(3);
+        taskManager.getSubTask(4);
+        taskManager.getTask(1);
+        taskManager.getEpicTask(3);
+        taskManager.getSubTask(4);
+        System.out.println(historyManager.getHistory());
     }
 }
