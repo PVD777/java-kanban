@@ -1,17 +1,12 @@
 import model.*;
 import service.*;
-import Utility.Managers;
-
-import static Utility.Managers.getDefaultHistory;
+import service.Managers;
 
 public class Main {
     public static void main(String[] args) {
 
-        //InMemoryTaskManager taskManager = new InMemoryTaskManager();
-        //InMemoryHistoryManager historyManager = new InMemoryHistoryManager();
         HistoryManager historyManager = Managers.getDefaultHistory();
         TaskManager taskManager = Managers.getDefault();
-
 
         Task taskOne = new Task("Название", "Описание");
         Task taskTwo = new Task("Еще одна название", "А тут еще одно описание");
@@ -52,7 +47,6 @@ public class Main {
         System.out.println(taskManager.findAllEpicTasks());
 
         System.out.println("Обновляю подзадачу");
-
         subTaskOne.setName("Задача посложнее");
         subTaskOne.setDescription("Описание посложнее");
         subTaskOne.setStatus(TaskStatus.DONE);

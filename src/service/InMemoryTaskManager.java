@@ -4,18 +4,17 @@ import model.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 
 public class InMemoryTaskManager implements TaskManager {
-    InMemoryHistoryManager inMemoryHistoryManager = new InMemoryHistoryManager();
+
+    private HistoryManager historyManager = Managers.getDefaultHistory();
     private static int counterId = 0; // счетчик для номеров задач
 
-    //Коллекции для хранания Задач и Эпиков.
     private HashMap<Integer, Task> tasks = new HashMap<>();
     // Подзадачи эпиков хранятся в полях самого эпика
     private HashMap<Integer, EpicTask> epicTasks = new HashMap<>();
 
-
-    // 3 метода для возврата задач/эпиков/сабов
     @Override
     public ArrayList<Task> findAllTasks() {
         ArrayList<Task> tasksList = new ArrayList<>();
@@ -45,7 +44,6 @@ public class InMemoryTaskManager implements TaskManager {
         return subTasksList;
     }
 
-    //Вернить список подзадач конкретного эпика
     @Override
     public ArrayList<SubTask> findTasksOfEpic(EpicTask epic) {
         ArrayList<SubTask> subTasksList = new ArrayList<>();
@@ -55,7 +53,6 @@ public class InMemoryTaskManager implements TaskManager {
         return subTasksList;
     }
 
-    // Методы для очистки от обычных задач/эпиков, сабов
     @Override
     public void clearTask() {
         tasks.clear();
@@ -73,24 +70,21 @@ public class InMemoryTaskManager implements TaskManager {
         }
     }
 
-    // Получение по АйДи задачи, эпика, саба
     @Override
     public Task getTask(int uniqId) {
         if (tasks.containsKey(uniqId)) {
-            inMemoryHistoryManager.add(tasks.get(uniqId));
+            historyManager.add(tasks.get(uniqId));
             return tasks.get(uniqId);
         }
-        System.out.println("Нет задачи с таким номером");
         return null;
     }
 
     @Override
     public EpicTask getEpicTask(int uniqId) {
         if (epicTasks.containsKey(uniqId)) {
-            inMemoryHistoryManager.add(epicTasks.get(uniqId));
+            historyManager.add(epicTasks.get(uniqId));
             return epicTasks.get(uniqId);
         }
-        System.out.println("Нет задачи с таким номером");
         return null;
     }
 
@@ -98,15 +92,13 @@ public class InMemoryTaskManager implements TaskManager {
     public SubTask getSubTask(int uniqId) {
         for (EpicTask task : epicTasks.values()) {
             if (task.getSubTasks().containsKey(uniqId)) {
-                inMemoryHistoryManager.add(task.getSubTasks().get(uniqId));
+                historyManager.add(task.getSubTasks().get(uniqId));
                 return task.getSubTasks().get(uniqId);
             }
         }
-        System.out.println("Нет задачи с таким номером");
         return null;
     }
 
-    // создание задачи, эпика, саба
     @Override
     public void createNewTask(Task task) {
         tasks.put(++counterId, task);
@@ -128,15 +120,12 @@ public class InMemoryTaskManager implements TaskManager {
         task.setUniqId(counterId);
     }
 
-    // обновление обычной задачи, эпика, саба
     @Override
     public void updateTask(Task task) {
         if (tasks.containsKey(task.getUniqId())) {
             tasks.get(task.getUniqId()).setName(task.getName());
             tasks.get(task.getUniqId()).setDescription(task.getDescription());
             tasks.get(task.getUniqId()).setStatus(task.getStatus());
-        } else {
-            System.out.println("Нет такой задачи");
         }
     }
 
@@ -145,8 +134,6 @@ public class InMemoryTaskManager implements TaskManager {
         if (epicTasks.containsKey(task.getUniqId())) {
             epicTasks.get(task.getUniqId()).setName(task.getName());
             epicTasks.get(task.getUniqId()).setDescription(task.getDescription());
-        } else {
-            System.out.println("Нет такого эпика");
         }
     }
 
@@ -158,19 +145,14 @@ public class InMemoryTaskManager implements TaskManager {
                 epic.getSubTasks().get(task.getUniqId()).setDescription(task.getDescription());
                 epic.getSubTasks().get(task.getUniqId()).setStatus(task.getStatus());
                 epic.checkStatus(epic);
-            } else {
-                System.out.println("Нет такй подзадачи");
             }
         }
     }
 
-    // удалить обычное задание, эпик, саб
     @Override
     public void removeTask(int uniqId) {
         if (tasks.containsKey(uniqId)) {
             tasks.remove(uniqId);
-        } else {
-            System.out.println("Нет задачи с таким номером");
         }
     }
 
@@ -178,8 +160,6 @@ public class InMemoryTaskManager implements TaskManager {
     public void removeEpicTask(int uniqId) {
         if (epicTasks.containsKey(uniqId)) {
             epicTasks.remove(uniqId);
-        } else {
-            System.out.println("Нет задачи с таким номером");
         }
     }
 
@@ -189,13 +169,13 @@ public class InMemoryTaskManager implements TaskManager {
             if (epic.getSubTasks().containsKey(uniqId)) {
                 epic.getSubTasks().remove(uniqId);
                 epic.checkStatus(epic);
-            } else {
-                System.out.println("Нет задачи с таким номером");
             }
         }
     }
 
-
-
+    @Override
+    public LinkedList<Task> getHistory() {
+        return historyManager.getHistory();
+    }
 
 }
