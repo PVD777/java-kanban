@@ -1,12 +1,14 @@
 package service;
 
 import model.Task;
+
 import java.util.LinkedList;
 
 
 public class InMemoryHistoryManager implements HistoryManager {
 
-    private static LinkedList<Task> tasksHistory = new LinkedList<>();
+    private static final LinkedList<Task> tasksHistory = new LinkedList<>();
+
     @Override
     public void add(Task task) {
         if (tasksHistory.size() >= 10) {
@@ -15,6 +17,7 @@ public class InMemoryHistoryManager implements HistoryManager {
         tasksHistory.add(task);
 
     }
+
     public LinkedList<Task> getHistory() {
         return tasksHistory;
     }

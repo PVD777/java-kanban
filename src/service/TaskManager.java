@@ -1,14 +1,17 @@
 package service;
 
-import model.*;
+import model.EpicTask;
+import model.SubTask;
+import model.Task;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 
-public interface TaskManager{
+public interface TaskManager {
 
 
     ArrayList<Task> findAllTasks();
+
     ArrayList<EpicTask> findAllEpicTasks();
 
     ArrayList<SubTask> findAllSubTasks();
@@ -32,7 +35,9 @@ public interface TaskManager{
 
 
     void createNewTask(Task task);
+
     void createNewEpicTask(EpicTask task);
+
     void createNewSubTask(SubTask task, EpicTask epicTask);
 
 

@@ -1,6 +1,10 @@
-import model.*;
-import service.*;
+import model.EpicTask;
+import model.SubTask;
+import model.Task;
+import service.HistoryManager;
 import service.Managers;
+import service.TaskManager;
+import service.TaskStatus;
 
 public class Main {
     public static void main(String[] args) {

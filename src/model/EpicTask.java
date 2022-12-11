@@ -5,7 +5,7 @@ import service.TaskStatus;
 import java.util.HashMap;
 
 public class EpicTask extends Task {
-    private HashMap<Integer, SubTask> subTasks = new HashMap<>();
+    private final HashMap<Integer, SubTask> subTasks = new HashMap<>();
 
     public EpicTask(String name, String description) {
         super(name, description);
@@ -30,9 +30,11 @@ public class EpicTask extends Task {
             }
         }
     }
+
     public HashMap<Integer, SubTask> getSubTasks() {
         return subTasks;
     }
+
     @Override
     public String toString() {
         return "TasksType.EpicTask{" +

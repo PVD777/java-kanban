@@ -1,6 +1,8 @@
 package service;
 
-import model.*;
+import model.EpicTask;
+import model.SubTask;
+import model.Task;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,12 +10,11 @@ import java.util.LinkedList;
 
 public class InMemoryTaskManager implements TaskManager {
 
-    private HistoryManager historyManager = Managers.getDefaultHistory();
     private static int counterId = 0; // счетчик для номеров задач
-
-    private HashMap<Integer, Task> tasks = new HashMap<>();
+    private final HistoryManager historyManager = Managers.getDefaultHistory();
+    private final HashMap<Integer, Task> tasks = new HashMap<>();
     // Подзадачи эпиков хранятся в полях самого эпика
-    private HashMap<Integer, EpicTask> epicTasks = new HashMap<>();
+    private final HashMap<Integer, EpicTask> epicTasks = new HashMap<>();
 
     @Override
     public ArrayList<Task> findAllTasks() {
@@ -151,16 +152,12 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void removeTask(int uniqId) {
-        if (tasks.containsKey(uniqId)) {
-            tasks.remove(uniqId);
-        }
+        tasks.remove(uniqId);
     }
 
     @Override
     public void removeEpicTask(int uniqId) {
-        if (epicTasks.containsKey(uniqId)) {
-            epicTasks.remove(uniqId);
-        }
+        epicTasks.remove(uniqId);
     }
 
     @Override
