@@ -5,7 +5,7 @@ import model.SubTask;
 import model.Task;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.List;
 
 public interface TaskManager {
 
@@ -54,5 +54,5 @@ public interface TaskManager {
 
     void removeSubTask(int uniqId);
 
-    LinkedList<Task> getHistory();
+    List<Task> getHistory();
 }

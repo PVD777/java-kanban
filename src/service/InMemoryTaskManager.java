@@ -6,7 +6,7 @@ import model.Task;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.List;
 
 public class InMemoryTaskManager implements TaskManager {
 
@@ -153,11 +153,13 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void removeTask(int uniqId) {
         tasks.remove(uniqId);
+        historyManager.remove(uniqId);
     }
 
     @Override
     public void removeEpicTask(int uniqId) {
         epicTasks.remove(uniqId);
+        historyManager.remove(uniqId);
     }
 
     @Override
@@ -165,13 +167,14 @@ public class InMemoryTaskManager implements TaskManager {
         for (EpicTask epic : epicTasks.values()) {
             if (epic.getSubTasks().containsKey(uniqId)) {
                 epic.getSubTasks().remove(uniqId);
+                historyManager.remove(uniqId);
                 epic.checkStatus(epic);
             }
         }
     }
 
     @Override
-    public LinkedList<Task> getHistory() {
+    public List<Task> getHistory() {
         return historyManager.getHistory();
     }
 
