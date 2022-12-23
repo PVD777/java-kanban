@@ -1,48 +1,33 @@
 package model;
 
-import service.TaskStatus;
-
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 
 public class EpicTask extends Task {
-    private final HashMap<Integer, SubTask> subTasks = new HashMap<>();
-
+    private final List<Integer> subTasksID = new ArrayList<>();
     public EpicTask(String name, String description) {
         super(name, description);
     }
 
-    /*Метод для проверки и изменения при необходимости статуса эпика
-      Принмает эпик, проверяет на наличие разных статусов подзадач, присваивает статус эпику*/
-    public void checkStatus(EpicTask epic) {
-        boolean isNew = false;
-        boolean isInProgress = false;
-        boolean isDone = false;
-        for (SubTask subTask : epic.subTasks.values()) {
-            if ((!isNew) && (subTask.getStatus() == (TaskStatus.NEW))) isNew = true;
-            if (!isInProgress && subTask.getStatus() == (TaskStatus.IN_PROGRESS)) isInProgress = true;
-            if (!isDone && subTask.getStatus() == (TaskStatus.DONE)) isDone = true;
-            if (isNew && !isInProgress && !isDone) {
-                epic.setStatus(TaskStatus.NEW);
-            } else if ((!isNew && !isInProgress && isDone)) {
-                epic.setStatus(TaskStatus.DONE);
-            } else {
-                epic.setStatus(TaskStatus.IN_PROGRESS);
-            }
-        }
+    public List<Integer> getSubTasksID() {
+        return subTasksID;
     }
 
-    public HashMap<Integer, SubTask> getSubTasks() {
-        return subTasks;
+    public void addSubTasksID(Integer id) {
+        subTasksID.add(id);
     }
+    public void removeFromSubTasksID (Integer id) {
+        subTasksID.remove(Integer.valueOf(id));
 
+    }
     @Override
     public String toString() {
         return "TasksType.EpicTask{" +
-                "uniqID=" + getUniqId() +
+                "uniqID=" + getId() +
                 ", name='" + getName() + '\'' +
                 ", description='" + getDescription() + '\'' +
                 ", status='" + getStatus() + '\'' +
-                ", subTasks='" + subTasks + '\'' +
+                ", subTasksID='" + subTasksID + '\'' +
                 '}';
     }
 }

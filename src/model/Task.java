@@ -3,7 +3,7 @@ package model;
 import service.TaskStatus;
 
 public class Task {
-    private int uniqId;
+    private int id;
     private String name;
     private String description;
     private TaskStatus status;
@@ -13,13 +13,13 @@ public class Task {
         this.description = description;
     }
 
-    public int getUniqId() {
-        return uniqId;
+    public int getId() {
+        return id;
     }
 
 
-    public void setUniqId(int uniqID) {
-        this.uniqId = uniqID;
+    public void setId(int uniqID) {
+        this.id = uniqID;
     }
 
     public String getName() {
@@ -49,7 +49,7 @@ public class Task {
     @Override
     public String toString() {
         return "TasksType.Task{" +
-                "uniqID=" + uniqId +
+                "uniqID=" + id +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", status='" + status + '\'' +

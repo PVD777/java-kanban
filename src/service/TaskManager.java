@@ -20,11 +20,11 @@ public interface TaskManager {
     ArrayList<SubTask> findTasksOfEpic(EpicTask epic);
 
 
-    void clearTask();
+    void clearTasks();
 
-    void clearEpicTask();
+    void clearEpicTasks();
 
-    void clearSubTask();
+    void clearSubTasks();
 
 
     Task getTask(int uniqId);
@@ -38,7 +38,7 @@ public interface TaskManager {
 
     void createNewEpicTask(EpicTask task);
 
-    void createNewSubTask(SubTask task, EpicTask epicTask);
+    void createNewSubTask(SubTask task);
 
 
     void updateTask(Task task);
@@ -46,6 +46,8 @@ public interface TaskManager {
     void updateEpicTask(EpicTask task);
 
     void updateSubTask(SubTask task);
+
+    void checkEpicStatus (Integer id);
 
 
     void removeTask(int uniqId);
