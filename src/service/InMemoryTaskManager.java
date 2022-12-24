@@ -11,7 +11,7 @@ import java.util.List;
 public class InMemoryTaskManager implements TaskManager {
 
     private static int counterId = 0; // счетчик для номеров задач
-    public final HistoryManager historyManager = Managers.getDefaultHistory();
+    private final HistoryManager historyManager = Managers.getDefaultHistory();
     private final HashMap<Integer, Task> tasks = new HashMap<>();
     private final HashMap<Integer, EpicTask> epicTasks = new HashMap<>();
     private final HashMap <Integer, SubTask> subTasks = new HashMap<>();
@@ -135,22 +135,27 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void updateTask(Task task) {
-        tasks.putIfAbsent(task.getId(), task);
-
+        if (tasks.containsKey(task.getId())) {
+            tasks.put(task.getId(), task);
+        }
     }
 
     @Override
     public void updateEpicTask(EpicTask task) {
-        epicTasks.putIfAbsent(task.getId(), task);
+        if (epicTasks.containsKey(task.getId())) {
+            epicTasks.put(task.getId(), task);
+        }
     }
 
     @Override
     public void updateSubTask(SubTask task) {
-            subTasks.putIfAbsent(task.getId(), task);
+        if (subTasks.containsKey(task.getId())) {
+            subTasks.put(task.getId(), task);
             checkEpicStatus(task.getEpicId());
+        }
+
     }
 
-    @Override
     public void checkEpicStatus (Integer epicId) {
         boolean isNew = false;
         boolean isInProgress = false;

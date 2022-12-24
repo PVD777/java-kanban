@@ -47,9 +47,6 @@ public interface TaskManager {
 
     void updateSubTask(SubTask task);
 
-    void checkEpicStatus (Integer id);
-
-
     void removeTask(int uniqId);
 
     void removeEpicTask(int uniqId);
