@@ -7,14 +7,11 @@ import java.util.HashMap;
 
 
 public class InMemoryHistoryManager implements HistoryManager {
-    private CustumLinkedList<Task> linkedTasksHistory = new CustumLinkedList<>();
+    private CustumLinkedList linkedTasksHistory = new CustumLinkedList();
 
 
     @Override
     public void add(Task task) {
-        if (linkedTasksHistory.size() >= 10) {
-            linkedTasksHistory.removeFirstNode();
-        }
         if (linkedTasksHistory.mapHistory.containsKey(task.getId())) {
             linkedTasksHistory.removeNode(linkedTasksHistory.mapHistory.get(task.getId()));
         }
@@ -33,14 +30,12 @@ public class InMemoryHistoryManager implements HistoryManager {
     public ArrayList<Task> getHistory() {
         return linkedTasksHistory.getTasks();
     }
-    class CustumLinkedList<T> {
+    class CustumLinkedList {
 
         public HashMap<Integer, Node<Task>> mapHistory = new HashMap<>();
 
         public Node<Task> head;
         public Node<Task> tail;
-        private int size = 0;
-
 
         public void linkLast(Task task) {
             Node<Task> oldTail = tail;
@@ -50,7 +45,6 @@ public class InMemoryHistoryManager implements HistoryManager {
                 head = newNode;
             else
                 oldTail.setNext(newNode);
-            size++;
             mapHistory.put(task.getId(), newNode);
         }
 
@@ -77,26 +71,10 @@ public class InMemoryHistoryManager implements HistoryManager {
             if (node.getPrev() != null) {
                 node.getPrev().setNext(node.getNext());
             }
-            size--;
             mapHistory.remove(node.getData().getId());
             return;
         }
 
-        public void removeFirstNode() {
-            if (head != null) {
-                mapHistory.remove(head.getData().getId());
-                Node<Task> temp = head;
-                head = head.getNext();
-                temp = null;
-            }
-            if (head != null)
-                head.setPrev(null);
-            size--;
-        }
-
-        public int size() {
-            return this.size;
-        }
     }
 
 }

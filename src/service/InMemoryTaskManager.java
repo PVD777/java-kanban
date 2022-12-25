@@ -156,7 +156,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     }
 
-    public void checkEpicStatus (Integer epicId) {
+    private void checkEpicStatus (Integer epicId) {
         boolean isNew = false;
         boolean isInProgress = false;
         boolean isDone = false;
