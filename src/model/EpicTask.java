@@ -1,10 +1,13 @@
 package model;
 
+import service.TaskType;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class EpicTask extends Task {
     private final List<Integer> subTasksID = new ArrayList<>();
+    final TaskType type = TaskType.EPIC;
     public EpicTask(String name, String description) {
         super(name, description);
     }
@@ -22,12 +25,6 @@ public class EpicTask extends Task {
     }
     @Override
     public String toString() {
-        return "TasksType.EpicTask{" +
-                "uniqID=" + getId() +
-                ", name='" + getName() + '\'' +
-                ", description='" + getDescription() + '\'' +
-                ", status='" + getStatus() + '\'' +
-                ", subTasksID='" + subTasksID + '\'' +
-                '}';
+        return getId() + "," + type + "," + getName() + "," + getStatus() +"," + getDescription() + ',';
     }
 }

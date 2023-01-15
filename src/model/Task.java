@@ -1,12 +1,14 @@
 package model;
 
 import service.TaskStatus;
+import service.TaskType;
 
 public class Task {
     private int id;
     private String name;
     private String description;
     private TaskStatus status;
+    final TaskType type = TaskType.TASK;
 
     public Task(String name, String description) {
         this.name = name;
@@ -48,12 +50,7 @@ public class Task {
 
     @Override
     public String toString() {
-        return "TasksType.Task{" +
-                "uniqID=" + id +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", status='" + status + '\'' +
-                '}';
+        return  id + "," + type + "," + name + "," + status +"," + description + ',';
     }
 }
 

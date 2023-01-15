@@ -1,7 +1,10 @@
 package model;
 
+import service.TaskType;
+
 public class SubTask extends Task {
     private int epicId;
+    final TaskType type = TaskType.SUBTASK;
 
     public SubTask(String name, String description, EpicTask task) {
         super(name, description);
@@ -21,12 +24,6 @@ public class SubTask extends Task {
 
     @Override
     public String toString() {
-        return "TasksType.SubTask{" +
-                "uniqID=" + getId() +
-                ", epicID='" + epicId + '\'' +
-                ", name='" + getName() + '\'' +
-                ", description='" + getDescription() + '\'' +
-                ", status='" + getStatus() + '\'' +
-                '}';
+        return getId() + "," + type + "," + getName() + "," + getStatus() +"," + getDescription() + ',' + epicId;
     }
 }

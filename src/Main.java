@@ -2,13 +2,20 @@ import model.EpicTask;
 import model.SubTask;
 import model.Task;
 
+import service.FileBackedTasksManager;
 import service.Managers;
 import service.TaskManager;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
 
 public class Main {
-    public static void main(String[] args) {
-        TaskManager taskManager = Managers.getDefault();
+
+    public static void main(String[] args) throws IOException {
+        //TaskManager taskManager = Managers.getDefault();
+        FileBackedTasksManager taskManager = Managers.getFileBackedTasksManager(System.getProperty("user.dir") + File.separator + "resources"
+                + File.separator + "Task List.csv");
 
         Task taskOne = new Task("Название", "Описание");
         Task taskTwo = new Task("Еще одна название", "А тут еще одно описание");
@@ -25,7 +32,6 @@ public class Main {
         taskManager.createNewSubTask(subTaskTwo);
         taskManager.createNewSubTask(subTaskThree);
 
-        System.out.println("Сделам несколько запросов, удалим часть тасков, и выведем историю");
         taskManager.getTask(1);
         taskManager.getEpicTask(3);
         taskManager.getTask(1);
@@ -35,17 +41,17 @@ public class Main {
         taskManager.getSubTask(6);
         taskManager.getSubTask(5);
         taskManager.getSubTask(7);
+
+        System.out.println("Задачи:");
+        System.out.println(taskManager.findAllTasks() + " " + taskManager.findAllEpicTasks() + " " + taskManager.findAllSubTasks());
+        System.out.println("История запросов");
         System.out.println(taskManager.getHistory());
 
-        System.out.println("Удалим обычную задачи и проверим историю");
-        taskManager.removeTask(2);
-        System.out.println(taskManager.getHistory());
+        FileBackedTasksManager loadedTaskManager = FileBackedTasksManager.loadFromFile(new File(System.getProperty("user.dir") + File.separator + "resources"
+                + File.separator + "Task List.csv"));
 
-        System.out.println("Удалим эпик и проверим историю");
-        taskManager.removeEpicTask(3);
-        System.out.println(taskManager.getHistory());
-        taskManager.clearEpicTasks();
-        System.out.println("Удалим ВСЕ эпики и проверим историю");
-        System.out.println(taskManager.getHistory());
+
+
+
     }
 }

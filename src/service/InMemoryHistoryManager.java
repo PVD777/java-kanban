@@ -59,21 +59,21 @@ public class InMemoryHistoryManager implements HistoryManager {
         }
 
         public void removeNode(Node node) {
-            if (head == null || node == null) {
-                return;
+            Node prevNode = node.getPrev();
+            Node nextNode = node.getNext();
+            if (prevNode != null) {
+                prevNode.setNext(nextNode);
+            } else {
+                head = nextNode;
             }
-            if (head == node) {
-                head = node.getNext();
-            }
-            if (node.getNext() != null) {
-                node.getNext().setPrev(node.getPrev());
-            }
-            if (node.getPrev() != null) {
-                node.getPrev().setNext(node.getNext());
+            if (nextNode != null) {
+                nextNode.setPrev(prevNode);
+            } else {
+                tail = prevNode;
             }
             mapHistory.remove(node.getData().getId());
-            return;
         }
+
 
     }
 
