@@ -13,9 +13,8 @@ import java.nio.file.Path;
 public class Main {
 
     public static void main(String[] args) throws IOException {
-        //TaskManager taskManager = Managers.getDefault();
-        FileBackedTasksManager taskManager = Managers.getFileBackedTasksManager(System.getProperty("user.dir") + File.separator + "resources"
-                + File.separator + "Task List.csv");
+        FileBackedTasksManager taskManager = FileBackedTasksManager.loadFromFile(new File(System.getProperty("user.dir") + File.separator + "resources"
+                + File.separator + "Task List.csv"));
 
         Task taskOne = new Task("Название", "Описание");
         Task taskTwo = new Task("Еще одна название", "А тут еще одно описание");
@@ -49,6 +48,7 @@ public class Main {
 
         FileBackedTasksManager loadedTaskManager = FileBackedTasksManager.loadFromFile(new File(System.getProperty("user.dir") + File.separator + "resources"
                 + File.separator + "Task List.csv"));
+        System.out.println(loadedTaskManager.getHistory());
 
 
 

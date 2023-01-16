@@ -4,6 +4,7 @@ import model.EpicTask;
 import model.SubTask;
 import model.Task;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,38 +21,38 @@ public interface TaskManager {
     ArrayList<SubTask> findTasksOfEpic(EpicTask epic);
 
 
-    void clearTasks();
+    void clearTasks() throws IOException;
 
-    void clearEpicTasks();
+    void clearEpicTasks() throws IOException;
 
-    void clearSubTasks();
-
-
-    Task getTask(int uniqId);
-
-    EpicTask getEpicTask(int uniqId);
-
-    SubTask getSubTask(int uniqId);
+    void clearSubTasks() throws IOException;
 
 
-    void createNewTask(Task task);
+    Task getTask(int uniqId) throws IOException;
 
-    void createNewEpicTask(EpicTask task);
+    EpicTask getEpicTask(int uniqId) throws IOException;
 
-    void createNewSubTask(SubTask task);
+    SubTask getSubTask(int uniqId) throws IOException;
 
 
-    void updateTask(Task task);
+    void createNewTask(Task task) throws IOException;
 
-    void updateEpicTask(EpicTask task);
+    void createNewEpicTask(EpicTask task) throws IOException;
 
-    void updateSubTask(SubTask task);
+    void createNewSubTask(SubTask task) throws IOException;
 
-    void removeTask(int uniqId);
 
-    void removeEpicTask(int uniqId);
+    void updateTask(Task task) throws IOException;
 
-    void removeSubTask(int uniqId);
+    void updateEpicTask(EpicTask task) throws IOException;
+
+    void updateSubTask(SubTask task) throws IOException;
+
+    void removeTask(int uniqId) throws IOException;
+
+    void removeEpicTask(int uniqId) throws IOException;
+
+    void removeSubTask(int uniqId) throws IOException;
 
     List<Task> getHistory();
 }

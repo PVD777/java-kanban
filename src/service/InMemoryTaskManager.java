@@ -4,6 +4,7 @@ import model.EpicTask;
 import model.SubTask;
 import model.Task;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -53,7 +54,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void clearTasks() {
+    public void clearTasks() throws IOException {
         List<Task> history = historyManager.getHistory();
         for (Integer id : tasks.keySet()) {
             if (history.contains(tasks.get(id))) {
@@ -64,7 +65,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void clearEpicTasks() {
+    public void clearEpicTasks() throws IOException {
         List<Task> history = historyManager.getHistory();
         for (Integer id : epicTasks.keySet()) {
             if (history.contains(epicTasks.get(id))) {
@@ -75,7 +76,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void clearSubTasks() {
+    public void clearSubTasks() throws IOException {
         List<Task> history = historyManager.getHistory();
         for (Integer id : subTasks.keySet()) {
             if (history.contains(subTasks.get(id))) {
@@ -86,7 +87,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public Task getTask(int uniqId) {
+    public Task getTask(int uniqId) throws IOException {
         if (tasks.containsKey(uniqId)) {
             historyManager.add(tasks.get(uniqId));
             return tasks.get(uniqId);
@@ -95,7 +96,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public EpicTask getEpicTask(int uniqId) {
+    public EpicTask getEpicTask(int uniqId) throws IOException {
         if (epicTasks.containsKey(uniqId)) {
             historyManager.add(epicTasks.get(uniqId));
             return epicTasks.get(uniqId);
@@ -104,7 +105,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public SubTask getSubTask(int uniqId) {
+    public SubTask getSubTask(int uniqId) throws IOException {
         if (subTasks.containsKey(uniqId)) {
             historyManager.add(subTasks.get(uniqId));
             return subTasks.get(uniqId);
@@ -113,20 +114,20 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void createNewTask(Task task) {
+    public void createNewTask(Task task) throws IOException {
         tasks.put(++counterId, task);
         task.setStatus(TaskStatus.NEW);
         task.setId(counterId);
     }
 
     @Override
-    public void createNewEpicTask(EpicTask task) {
+    public void createNewEpicTask(EpicTask task) throws IOException {
         epicTasks.put(++counterId, task);
         task.setStatus(TaskStatus.NEW);
         task.setId(counterId);
     }
 
-    public void createNewSubTask(SubTask task) {
+    public void createNewSubTask(SubTask task) throws IOException {
         subTasks.put(++counterId, task);
         task.setStatus(TaskStatus.NEW);
         task.setId(counterId);
@@ -134,21 +135,21 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void updateTask(Task task) {
+    public void updateTask(Task task) throws IOException {
         if (tasks.containsKey(task.getId())) {
             tasks.put(task.getId(), task);
         }
     }
 
     @Override
-    public void updateEpicTask(EpicTask task) {
+    public void updateEpicTask(EpicTask task) throws IOException {
         if (epicTasks.containsKey(task.getId())) {
             epicTasks.put(task.getId(), task);
         }
     }
 
     @Override
-    public void updateSubTask(SubTask task) {
+    public void updateSubTask(SubTask task) throws IOException {
         if (subTasks.containsKey(task.getId())) {
             subTasks.put(task.getId(), task);
             checkEpicStatus(task.getEpicId());
@@ -176,13 +177,13 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void removeTask(int uniqId) {
+    public void removeTask(int uniqId) throws IOException {
         tasks.remove(uniqId);
         historyManager.remove(uniqId);
     }
 
     @Override
-    public void removeEpicTask(int uniqId) {
+    public void removeEpicTask(int uniqId) throws IOException {
         for (Integer id : epicTasks.get(uniqId).getSubTasksID()) {
             subTasks.remove(id);
             historyManager.remove(id);
@@ -192,7 +193,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void removeSubTask(int uniqId) {
+    public void removeSubTask(int uniqId) throws IOException {
         int tmp = subTasks.get(uniqId).getEpicId();
         subTasks.remove(uniqId);
         epicTasks.get(tmp).removeFromSubTasksID(uniqId);
@@ -204,6 +205,25 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public List<Task> getHistory() {
         return historyManager.getHistory();
+    }
+    public void setHistory (List<Integer> historyList) {
+
+        try {
+            for (int id : historyList) {
+                if (tasks.containsKey(id)) {
+                    historyManager.add(tasks.get(id));
+                }
+                if (epicTasks.containsKey(id)) {
+                    historyManager.add(epicTasks.get(id));
+                }
+                if (subTasks.containsKey(id)) {
+                    historyManager.add(subTasks.get(id));
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
 }
