@@ -21,43 +21,43 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
     @Override
-    public void createNewTask(Task task) throws IOException {
+    public void createNewTask(Task task)  {
             super.createNewTask(task);
             save();
     }
 
     @Override
-    public void createNewEpicTask(EpicTask task) throws IOException {
+    public void createNewEpicTask(EpicTask task) {
             super.createNewEpicTask(task);
             save();
     }
 
     @Override
-    public void createNewSubTask(SubTask task) throws IOException {
+    public void createNewSubTask(SubTask task) {
             super.createNewSubTask(task);
             save();
     }
 
     @Override
-    public void clearTasks() throws IOException {
+    public void clearTasks() {
             super.clearTasks();
             save();
     }
 
     @Override
-    public void clearEpicTasks() throws IOException {
+    public void clearEpicTasks() {
             super.clearEpicTasks();
             save();
     }
 
     @Override
-    public void clearSubTasks() throws IOException {
+    public void clearSubTasks() {
             super.clearSubTasks();
             save();
     }
 
     @Override
-    public Task getTask(int uniqId) throws IOException {
+    public Task getTask(int uniqId) {
             if (tasks.containsKey(uniqId)) {
                 historyManager.add(tasks.get(uniqId));
                 save();
@@ -67,7 +67,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
     @Override
-    public EpicTask getEpicTask(int uniqId) throws IOException {
+    public EpicTask getEpicTask(int uniqId) {
             if (epicTasks.containsKey(uniqId)) {
                 historyManager.add(epicTasks.get(uniqId));
                 save();
@@ -77,7 +77,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
     @Override
-    public SubTask getSubTask(int uniqId) throws IOException {
+    public SubTask getSubTask(int uniqId) {
             if (subTasks.containsKey(uniqId)) {
                 historyManager.add(subTasks.get(uniqId));
                 save();
@@ -87,42 +87,42 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
     @Override
-    public void updateTask(Task task) throws IOException {
+    public void updateTask(Task task) {
             super.updateTask(task);
             save();
     }
 
     @Override
-    public void updateEpicTask(EpicTask task) throws IOException {
+    public void updateEpicTask(EpicTask task) {
             super.updateEpicTask(task);
             save();
     }
 
     @Override
-    public void updateSubTask(SubTask task) throws IOException {
+    public void updateSubTask(SubTask task) {
             super.updateSubTask(task);
             save();
     }
 
     @Override
-    public void removeTask(int uniqId) throws IOException {
+    public void removeTask(int uniqId) {
             super.removeTask(uniqId);
             save();
     }
 
     @Override
-    public void removeEpicTask(int uniqId) throws IOException {
+    public void removeEpicTask(int uniqId) {
             super.removeEpicTask(uniqId);
             save();
     }
 
     @Override
-    public void removeSubTask(int uniqId) throws IOException {
+    public void removeSubTask(int uniqId) {
             super.removeSubTask(uniqId);
             save();
     }
 
-    private void save() {
+    private void save()  {
         try {
 
             Writer fileWriter = new FileWriter(path, false);
@@ -148,8 +148,6 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
             bw.close();
         } catch (IOException e) {
             throw new ManagerSaveException("Непредвиденная ошибка", e);
-        } catch (NullPointerException e) {
-
         }
     }
 
@@ -195,25 +193,18 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
     static List<Integer> historyFromString(String value) {
-        try {
             List<Integer> historyId = new ArrayList<>();
             String[] IdArray = value.split(", ");
             for (String id : IdArray) {
                 historyId.add(Integer.parseInt(id));
             }
             return historyId;
-        } catch (NullPointerException e) {
-
-        }
-        return null;
     }
 
     public static FileBackedTasksManager loadFromFile(File file) throws IOException {
-
         int lineCount = getLineCountByReader(file.getPath());
         FileBackedTasksManager taskManager = new FileBackedTasksManager(file.getPath());
         BufferedReader br = new BufferedReader(new FileReader(file));
-
         br.readLine();
         for (int i = 2; i < lineCount - 1; i++) {
             taskManager.fromString(br.readLine());
@@ -224,7 +215,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         return taskManager;
     }
 
-    public static int getLineCountByReader(String fileName) throws IOException {
+    private static int getLineCountByReader(String fileName) throws IOException {
         try (var lnr = new LineNumberReader(new BufferedReader(new FileReader(fileName)))) {
             while (lnr.readLine() != null) ;
             return lnr.getLineNumber();
