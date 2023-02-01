@@ -14,7 +14,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
 
 
     private String path;
-    private final static String TABLE_HEADER = "id,type,name,status,description,epic";
+    private final static String TABLE_HEADER = "id,type,name,status,description,startTime,duration,epic";
 
     private FileBackedTasksManager(String path) {
         this.path = path;
@@ -159,23 +159,29 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         String taskName = taskInline[2];
         String taskStatus = taskInline[3];
         String taskDescription = taskInline[4];
+        String startTime = taskInline[5];
+        long duration = Long.parseLong(taskInline[6]);
+
 
         switch (TaskType.valueOf(taskType)) {
             case TASK:
-                tasks.put(id, new Task(taskName, taskDescription));
+                tasks.put(id, new Task(taskName, taskDescription, startTime, duration));
                 tasks.get(id).setStatus(TaskStatus.valueOf(taskInline[3]));
                 tasks.get(id).setId(id);
+                prioritizedTasks.add(tasks.get(id));
                 return tasks.get(id);
             case EPIC:
-                epicTasks.put(id, new EpicTask(taskName, taskDescription));
+                epicTasks.put(id, new EpicTask(taskName, taskDescription, startTime));
                 epicTasks.get(id).setStatus(TaskStatus.valueOf(taskStatus));
                 epicTasks.get(id).setId(id);
+                prioritizedTasks.add(epicTasks.get(id));
                 return epicTasks.get(id);
             case SUBTASK:
-                subTasks.put(id, new SubTask(taskName, taskDescription, epicTasks.get(Integer.parseInt(taskInline[5]))));
+                subTasks.put(id, new SubTask(taskName, taskDescription, startTime, duration, epicTasks.get(Integer.parseInt(taskInline[7]))));
                 subTasks.get(id).setStatus(TaskStatus.valueOf(taskStatus));
                 subTasks.get(id).setId(id);
-                epicTasks.get(Integer.parseInt(taskInline[5])).addSubTasksID(id);
+                epicTasks.get(Integer.parseInt(taskInline[7])).addSubTasksID(id);
+                prioritizedTasks.add(subTasks.get(id));
                 return subTasks.get(id);
             default:
                 throw new IllegalArgumentException();
@@ -206,13 +212,22 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         FileBackedTasksManager taskManager = new FileBackedTasksManager(file.getPath());
         BufferedReader br = new BufferedReader(new FileReader(file));
         br.readLine();
-        for (int i = 2; i < lineCount - 1; i++) {
-            taskManager.fromString(br.readLine());
+        try {
+            for (int i = 1; i < lineCount - 1; i++) /*while (!br.readLine().isEmpty())*/{
+                taskManager.fromString(br.readLine());
+            }
+            br.readLine();
+            taskManager.setHistory(historyFromString(br.readLine()));
+            br.close();
         }
-        br.readLine();
-        taskManager.setHistory(historyFromString(br.readLine()));
-        br.close();
-        return taskManager;
+        catch ( NullPointerException e) {
+
+        }
+        finally {
+            taskManager.setCounterId(taskManager.findMaxId(taskManager));
+            return taskManager;
+        }
+
     }
 
     private static int getLineCountByReader(String fileName) throws IOException {
@@ -220,6 +235,22 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
             while (lnr.readLine() != null) ;
             return lnr.getLineNumber();
         }
+    }
+
+
+    private int findMaxId (TaskManager taskManager) {
+        int maxID = 0;
+        for (Task task : taskManager.findAllTasks()) {
+            if (task.getId() > maxID) maxID = task.getId();
+        }
+        for (EpicTask task : taskManager.findAllEpicTasks()) {
+            if (task.getId() > maxID) maxID = task.getId();
+        }
+        for (SubTask task : taskManager.findAllSubTasks()) {
+            if (task.getId() > maxID) maxID = task.getId();
+        }
+        return maxID;
+
     }
 }
 

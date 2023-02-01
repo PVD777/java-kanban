@@ -11,6 +11,11 @@ public class SubTask extends Task {
         epicId = task.getId();
     }
 
+    public SubTask(String name, String description, String startTime, long duration, EpicTask task) {
+        super(name, description, startTime, duration);
+        epicId = task.getId();
+    }
+
     public int getEpicId() {
         return epicId;
     }
@@ -24,6 +29,7 @@ public class SubTask extends Task {
 
     @Override
     public String toString() {
-        return getId() + "," + type + "," + getName() + "," + getStatus() +"," + getDescription() + ',' + epicId;
+        return getId() + "," + type + "," + getName() + "," + getStatus() + "," + getDescription() + "," +
+                getStartTime().format(formatter) + "," + getTaskDuration().toMinutes() + ',' + epicId;
     }
 }
