@@ -234,8 +234,8 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void removeTask(int uniqId) {
-        tasks.remove(uniqId);
         prioritizedTasks.remove(tasks.get(uniqId));
+        tasks.remove(uniqId);
         historyManager.remove(uniqId);
     }
 
