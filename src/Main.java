@@ -27,9 +27,9 @@ public class Main {
         taskManager.createNewTask(taskOne);
         taskManager.createNewTask(taskTwo);
         taskManager.createNewTask(taskThree);
-        EpicTask epicTaskOne = new EpicTask("Эпичное название", "Такое же описание", getRandomDateTimeOfPattern());
+        EpicTask epicTaskOne = new EpicTask("Эпичное название", "Такое же описание");
         EpicTask epicTaskTwo = new EpicTask("Еще один Эпик", "Но без startTime");
-        EpicTask epicTaskThree = new EpicTask("Для эпичного эпика", "Эпичное время старта", "31.12.1999|23:59");
+        EpicTask epicTaskThree = new EpicTask("Для эпичного эпика", "Эпичное время старта");
         taskManager.createNewEpicTask(epicTaskOne);
         taskManager.createNewEpicTask(epicTaskTwo);
         taskManager.createNewEpicTask(epicTaskThree);

@@ -9,16 +9,17 @@ import java.util.List;
 public class EpicTask extends Task {
     private final List<Integer> subTasksID = new ArrayList<>();
     final TaskType type = TaskType.EPIC;
+    private LocalDateTime endTime = LocalDateTime.now();
 
     public EpicTask(String name, String description) {
         super(name, description);
     }
 
-    public EpicTask(String name, String description, String startTime) {
+/*    public EpicTask(String name, String description, String startTime) {
         super(name, description);
         setStartTime(LocalDateTime.parse(startTime, formatter));
 
-    }
+    }*/
 
 
     public List<Integer> getSubTasksID() {
@@ -29,14 +30,29 @@ public class EpicTask extends Task {
         subTasksID.add(id);
     }
 
-    public void removeFromSubTasksID(Integer id) {
-        subTasksID.remove(Integer.valueOf(id));
+
+    public LocalDateTime getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(LocalDateTime endTime) {
+        this.endTime = endTime;
+    }
+
+    public void removeFromSubTasksID(Integer subId) {
+        subTasksID.remove(subId);
 
     }
 
     @Override
     public String toString() {
-        return getId() + "," + type + "," + getName() + "," + getStatus() + "," + getDescription() + "," +
-                getStartTime().format(formatter) + "," + getTaskDuration().toMinutes() + ',';
+        if (getStartTime() != null) {
+            return getId() + "," + type + "," + getName() + "," + getStatus() + "," + getDescription() + "," +
+                    getStartTime().format(formatter) + "," + getTaskDuration().toMinutes() + ',';
+        } else { return getId() + "," + type + "," + getName() + "," + getStatus() + "," + getDescription() + "," +
+                "," + "," + getTaskDuration().ofMinutes(0) + ',';
+
+        }
+
     }
 }

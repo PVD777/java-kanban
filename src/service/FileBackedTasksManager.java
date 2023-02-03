@@ -171,7 +171,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                 prioritizedTasks.add(tasks.get(id));
                 return tasks.get(id);
             case EPIC:
-                epicTasks.put(id, new EpicTask(taskName, taskDescription, startTime));
+                epicTasks.put(id, new EpicTask(taskName, taskDescription));
                 epicTasks.get(id).setStatus(TaskStatus.valueOf(taskStatus));
                 epicTasks.get(id).setId(id);
                 prioritizedTasks.add(epicTasks.get(id));
@@ -213,7 +213,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         BufferedReader br = new BufferedReader(new FileReader(file));
         br.readLine();
         try {
-            for (int i = 1; i < lineCount - 1; i++) /*while (!br.readLine().isEmpty())*/{
+            for (int i = 1; i < lineCount - 1; i++) {
                 taskManager.fromString(br.readLine());
             }
             br.readLine();

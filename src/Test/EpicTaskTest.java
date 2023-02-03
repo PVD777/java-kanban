@@ -99,14 +99,14 @@ class EpicTaskTest {
     }
     @Test
     public void shouldBeEpicDurationZeroWithOutSub() throws IOException {
-        EpicTask epic = new EpicTask("Эпичное название", "Эпичное описание описание", "01.02.2023|09:00");
+        EpicTask epic = new EpicTask("Эпичное название", "Эпичное описание описание");
         manager.createNewEpicTask(epic);
-        Assertions.assertEquals(Duration.ofMinutes(0), epic.getTaskDuration());
+        Assertions.assertEquals(null, epic.getTaskDuration());
     }
 
     @Test
     public void shouldBeEpicDurationHourWith3Sub() throws IOException {
-        EpicTask epic = new EpicTask("Эпичное название", "Эпичное описание описание", "01.02.2023|09:00");
+        EpicTask epic = new EpicTask("Эпичное название", "Эпичное описание описание");
         manager.createNewEpicTask(epic);
         SubTask sub1 = new SubTask("Название подзадачи1", "Описание подзадачи1", "01.02.2023|10:00", 20, epic);
         SubTask sub2 = new SubTask("Название подзадачи2", "Описание подзадачи2", "01.02.2023|11:00", 20, epic);

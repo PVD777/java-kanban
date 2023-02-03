@@ -13,13 +13,14 @@ import java.io.PrintWriter;
 
 class FileBackedTasksManagerTest extends TaskManagerTest<InMemoryTaskManager> {
 
-    String fileName = System.getProperty("user.dir") + File.separator + "resources" + File.separator + "Test List.csv";
+    File testFile = new File(System.getProperty("user.dir") + File.separator + "resources" + File.separator + "Test List.csv");
 
 
     @BeforeEach
     public void setManager() {
         try {
-            taskManager = FileBackedTasksManager.loadFromFile(new File(fileName));
+            testFile.createNewFile();
+            taskManager = FileBackedTasksManager.loadFromFile(testFile);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -28,7 +29,7 @@ class FileBackedTasksManagerTest extends TaskManagerTest<InMemoryTaskManager> {
     @AfterEach
     public void fileErase() {
         try {
-            PrintWriter pw = new PrintWriter(fileName);
+            PrintWriter pw = new PrintWriter(testFile.getPath());
             pw.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();

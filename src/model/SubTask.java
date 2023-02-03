@@ -29,7 +29,11 @@ public class SubTask extends Task {
 
     @Override
     public String toString() {
-        return getId() + "," + type + "," + getName() + "," + getStatus() + "," + getDescription() + "," +
-                getStartTime().format(formatter) + "," + getTaskDuration().toMinutes() + ',' + epicId;
+        if (getStartTime() != null) {
+            return getId() + "," + type + "," + getName() + "," + getStatus() + "," + getDescription() + "," +
+                    getStartTime().format(formatter) + "," + getTaskDuration().toMinutes() + ',' + epicId;
+        } else return getId() + "," + type + "," + getName() + "," + getStatus() + "," + getDescription() + "," +
+                "," + "," + getTaskDuration().ofMinutes(0) + ',' + epicId;
+
     }
 }
