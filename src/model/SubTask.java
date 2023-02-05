@@ -24,16 +24,20 @@ public class SubTask extends Task {
         this.epicId = epicId;
     }
 
-
-
-
     @Override
     public String toString() {
-        if (getStartTime() != null) {
-            return getId() + "," + type + "," + getName() + "," + getStatus() + "," + getDescription() + "," +
-                    getStartTime().format(formatter) + "," + getTaskDuration().toMinutes() + ',' + epicId;
-        } else return getId() + "," + type + "," + getName() + "," + getStatus() + "," + getDescription() + "," +
-                "," + "," + getTaskDuration().ofMinutes(0) + ',' + epicId;
+        return getId() + "," + type + "," + getName() + "," + getStatus() + "," + getDescription() + "," +
+                (getStartTime() != null ? getStartTime().format(formatter) : "") +
+                (getTaskDuration() != null ? getTaskDuration().toMinutes() : "") + ',' + epicId;
+    }
 
+    @Override
+    public boolean equals(Object o) {
+        return super.equals(o);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
     }
 }

@@ -15,8 +15,8 @@ public class Task {
     private String description;
     private TaskStatus status;
     private final TaskType type = TaskType.TASK;
-    private Duration duration;// = Duration.ofMinutes(0);
-    private LocalDateTime startTime;// = LocalDateTime.now();
+    private Duration duration;
+    private LocalDateTime startTime;
     protected DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy|HH:mm");
 
     public Task(String name, String description) {
@@ -87,17 +87,14 @@ public class Task {
 
     @Override
     public String toString() {
-        if (startTime != null) return  id + "," + type + "," + name + "," + status + "," + description + ',' +
-                startTime.format(formatter) + "," + duration.toMinutes() + ",";
-                else return id + "," + type + "," + name + "," + status + "," + description + ',' +
-                    "," + "," + Duration.ofMinutes(0) + ",";
+        return  id + "," + type + "," + name + "," + status + "," + description + ',' +
+                (startTime != null ? startTime.format(formatter): "") +
+                "," + (duration != null ? duration.toMinutes() : "") + ",";
     }
 
     @Override
     public boolean equals(Object o) {
-
         if (this == o) return true;
-        if (!(o instanceof Task)) return false;
 
         Task task = (Task) o;
 
@@ -121,5 +118,7 @@ public class Task {
         result = 31 * result + (startTime != null ? startTime.hashCode() : 0);
         return result;
     }
+
+
 }
 
