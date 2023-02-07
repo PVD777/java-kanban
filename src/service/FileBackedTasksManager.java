@@ -207,6 +207,20 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
             return historyId;
     }
 
+    public void setHistory(List<Integer> historyList) {
+            for (int id : historyList) {
+                if (tasks.containsKey(id)) {
+                    historyManager.add(tasks.get(id));
+                }
+                if (epicTasks.containsKey(id)) {
+                    historyManager.add(epicTasks.get(id));
+                }
+                if (subTasks.containsKey(id)) {
+                    historyManager.add(subTasks.get(id));
+                }
+            }
+    }
+
     public static FileBackedTasksManager loadFromFile(File file) throws IOException {
         int lineCount = getLineCountByReader(file.getPath());
         FileBackedTasksManager taskManager = new FileBackedTasksManager(file.getPath());

@@ -39,7 +39,7 @@ public class HistoryManagerTest {
     @Test
     public void historyShouldBeEmpty() {
         taskCreating();
-        Assertions.assertEquals(historyManager.getHistory().isEmpty(), true);
+        Assertions.assertTrue(historyManager.getHistory().isEmpty());
     }
 
     @Test

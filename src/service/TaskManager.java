@@ -7,7 +7,6 @@ import model.Task;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.TreeSet;
 
 public interface TaskManager {
 
@@ -55,7 +54,7 @@ public interface TaskManager {
 
     void removeSubTask(int uniqId) throws IOException;
 
-    TreeSet<Task> getPrioritizedTasks();
+    List <Task> getPrioritizedTasks();
 
     List<Task> getHistory();
 }
