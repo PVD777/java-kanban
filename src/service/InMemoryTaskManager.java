@@ -20,20 +20,17 @@ public class InMemoryTaskManager implements TaskManager {
 
     Comparator<Task> comparator = new Comparator<>() {
         @Override
-        public int compare(Task task1, Task task2) throws NullPointerException {
+        public int compare(Task task1, Task task2) {
             if (task1.equals(task2)) return 0;
-            if ((task2.getStartTime() == null)) return -1;
-            else if ((task1.getStartTime() == null)) return 1;
-            else if (task1.getStartTime().isBefore(task2.getStartTime())) return -1;
-            else if (task1.getStartTime().isAfter(task2.getStartTime())) return 1;
-            else if (task1.getStartTime().equals(task2.getStartTime())) return 1;
-            else return 0;
+
+            if (task1.getStartTime() == null && task2.getStartTime() == null) return 1;
+            else if (task2.getStartTime() == null) return -1;
+            else if (task1.getStartTime() == null) return 1;
+            else return task1.getStartTime().compareTo(task2.getStartTime());
         }
     };
 
     protected TreeSet<Task> prioritizedTasks = new TreeSet<>(comparator);
-
-
 
     @Override
     public ArrayList<Task> findAllTasks() {
@@ -249,12 +246,13 @@ public class InMemoryTaskManager implements TaskManager {
             LocalDateTime max = LocalDateTime.MIN;
             Duration epicDuration = Duration.ofMinutes(0);
             for (int subNum : task.getSubTasksID()) {
-                if (subTasks.get(subNum).getTaskDuration() != null) {
-                    epicDuration = epicDuration.plus(subTasks.get(subNum).getTaskDuration());
-                    if ((subTasks.get(subNum).getStartTime() != null) && (subTasks.get(subNum).getStartTime().isBefore(min)))
-                        min = subTasks.get(subNum).getStartTime();
-                    if ((subTasks.get(subNum).getEndTime() != null) && (subTasks.get(subNum).getEndTime().isAfter(max)))
-                        max = subTasks.get(subNum).getEndTime();
+                SubTask subTask = subTasks.get(subNum);
+                if (subTask.getTaskDuration() != null) {
+                    epicDuration = epicDuration.plus(subTask.getTaskDuration());
+                    if ((subTask.getStartTime() != null) && (subTask.getStartTime().isBefore(min)))
+                        min = subTask.getStartTime();
+                    if ((subTask.getEndTime() != null) && (subTask.getEndTime().isAfter(max)))
+                        max = subTask.getEndTime();
                 }
             }
             task.setTaskDuration(epicDuration);

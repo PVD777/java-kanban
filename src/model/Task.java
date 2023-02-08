@@ -7,7 +7,6 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
-import java.util.Optional;
 
 public class Task {
     private int id;
@@ -95,30 +94,14 @@ public class Task {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-
+        if (!(o instanceof Task)) return false;
         Task task = (Task) o;
-
-        if (id != task.id) return false;
-        if (!name.equals(task.name)) return false;
-        if (!description.equals(task.description)) return false;
-        if (status != task.status) return false;
-        if (type != task.type) return false;
-        if (!Objects.equals(duration, task.duration)) return false;
-        return Objects.equals(startTime, task.startTime);
+        return id == task.id && Objects.equals(name, task.name) && Objects.equals(description, task.description) && status == task.status && type == task.type && Objects.equals(duration, task.duration) && Objects.equals(startTime, task.startTime) && Objects.equals(formatter, task.formatter);
     }
 
     @Override
     public int hashCode() {
-        int result = id;
-        result = 31 * result + name.hashCode();
-        result = 31 * result + description.hashCode();
-        result = 31 * result + status.hashCode();
-        result = 31 * result + type.hashCode();
-        result = 31 * result + (duration != null ? duration.hashCode() : 0);
-        result = 31 * result + (startTime != null ? startTime.hashCode() : 0);
-        return result;
+        return Objects.hash(id, name, description, status, type, duration, startTime, formatter);
     }
-
-
 }
 
