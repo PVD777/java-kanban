@@ -21,8 +21,8 @@ public class InMemoryTaskManager implements TaskManager {
     Comparator<Task> comparator = new Comparator<>() {
         @Override
         public int compare(Task task1, Task task2) {
-            if (task1.equals(task2)) return 0;
-
+            if (task1.equals(task2)) return 0;//чтобы корректно удалялись таски даже с null startTime
+            //далее обработка вариантов с Null и станадртный compare
             if (task1.getStartTime() == null && task2.getStartTime() == null) return 1;
             else if (task2.getStartTime() == null) return -1;
             else if (task1.getStartTime() == null) return 1;
