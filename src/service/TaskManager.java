@@ -6,6 +6,7 @@ import model.Task;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public interface TaskManager {
@@ -57,4 +58,9 @@ public interface TaskManager {
     List <Task> getPrioritizedTasks();
 
     List<Task> getHistory();
+    public HashMap<Integer, Task> getTasks();
+
+    public HashMap<Integer, EpicTask> getEpicTasks();
+
+    public HashMap<Integer, SubTask> getSubTasks();
 }

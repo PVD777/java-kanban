@@ -16,7 +16,7 @@ class EpicTaskTest {
     TaskManager manager;
 
     @BeforeEach
-    public void setManager() { manager = Managers.getDefault();}
+    public void setManager() throws IOException, InterruptedException { manager = Managers.getDefault();}
 
     @Test
     public void shouldBeEpicStatusNewIfEpicWithoutSub() throws IOException {
@@ -108,9 +108,9 @@ class EpicTaskTest {
     public void shouldBeEpicDurationHourWith3Sub() throws IOException {
         EpicTask epic = new EpicTask("Эпичное название", "Эпичное описание описание");
         manager.createNewEpicTask(epic);
-        SubTask sub1 = new SubTask("Название подзадачи1", "Описание подзадачи1", "01.02.2023|10:00", 20, epic);
-        SubTask sub2 = new SubTask("Название подзадачи2", "Описание подзадачи2", "01.02.2023|11:00", 20, epic);
-        SubTask sub3 = new SubTask("Название подзадачи3", "Описание подзадачи3", "01.02.2023|12:00", 20, epic);
+        SubTask sub1 = new SubTask("Название подзадачи1", "Описание подзадачи1", "01.02.2023|10:00", 20L, epic);
+        SubTask sub2 = new SubTask("Название подзадачи2", "Описание подзадачи2", "01.02.2023|11:00", 20L, epic);
+        SubTask sub3 = new SubTask("Название подзадачи3", "Описание подзадачи3", "01.02.2023|12:00", 20L, epic);
         manager.createNewSubTask(sub1);
         manager.createNewSubTask(sub2);
         manager.createNewSubTask(sub3);

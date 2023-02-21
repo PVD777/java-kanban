@@ -7,14 +7,16 @@ import model.Task;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 
 public class FileBackedTasksManager extends InMemoryTaskManager {
 
-
     private String path;
     private final static String TABLE_HEADER = "id,type,name,status,description,startTime,duration,epic";
+
+    public FileBackedTasksManager(){}
 
     private FileBackedTasksManager(String path) {
         this.path = path;
@@ -122,7 +124,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
             save();
     }
 
-    private void save()  {
+    protected void save()  {
         try {
 
             Writer fileWriter = new FileWriter(path, false);
@@ -152,16 +154,20 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
     private Task fromString(String value) {
-        String[] taskInline = value.split(",");
-
+        String[] taskInline = value.split("\\,", -1);
         int id = Integer.parseInt(taskInline[0]);
         String taskType = taskInline[1];
         String taskName = taskInline[2];
         String taskStatus = taskInline[3];
         String taskDescription = taskInline[4];
-        String startTime = taskInline[5];
-        long duration = Long.parseLong(taskInline[6]);
-
+        String startTime = null;
+        Long duration = null;
+        if (!taskInline[5].equals("")) {
+            startTime = taskInline[5];
+        }
+        if (!taskInline[6].equals("")) {
+            duration = Long.parseLong(taskInline[6]);
+        }
 
         switch (TaskType.valueOf(taskType)) {
             case TASK:
@@ -184,7 +190,9 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                 prioritizedTasks.add(subTasks.get(id));
                 return subTasks.get(id);
             default:
+                System.out.println("Произошла ошибка");
                 throw new IllegalArgumentException();
+
         }
     }
 
@@ -200,10 +208,13 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
 
     static List<Integer> historyFromString(String value) {
             List<Integer> historyId = new ArrayList<>();
-            String[] IdArray = value.split(", ");
-            for (String id : IdArray) {
-                historyId.add(Integer.parseInt(id));
+            if (!historyId.isEmpty()) {
+                String[] IdArray = value.split(", ");
+                for (String id : IdArray) {
+                    historyId.add(Integer.parseInt(id));
+                }
             }
+
             return historyId;
     }
 
@@ -235,7 +246,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
             br.close();
         }
         catch ( NullPointerException e) {
-
+            e.printStackTrace();
         }
         finally {
             taskManager.setCounterId(taskManager.findMaxId(taskManager));
@@ -264,7 +275,6 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
             if (task.getId() > maxID) maxID = task.getId();
         }
         return maxID;
-
     }
 }
 

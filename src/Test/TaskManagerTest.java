@@ -318,8 +318,8 @@ abstract class TaskManagerTest<T extends TaskManager> {
     @Test
     public void shouldNotCreateTaskWithConflux() throws IOException {
 
-        task1 = new Task("Просто задача", "Просто описание", "01.01.2023|10:00", 120);
-        task2 = new Task("Просто задача2", "Просто описание2", "01.01.2023|11:00", 20);
+        task1 = new Task("Просто задача", "Просто описание", "01.01.2023|10:00", 120L);
+        task2 = new Task("Просто задача2", "Просто описание2", "01.01.2023|11:00", 20L);
         taskManager.createNewTask(task1);
         taskManager.createNewTask(task2);
         assertEquals(1, taskManager.findAllTasks().size());

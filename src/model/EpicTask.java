@@ -4,18 +4,19 @@ import service.TaskType;
 
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class EpicTask extends Task {
-    private final List<Integer> subTasksID = new ArrayList<>();
-    final TaskType type = TaskType.EPIC;
-    private LocalDateTime endTime;
+
     public EpicTask(String name, String description) {
         super(name, description);
+        type = TaskType.EPIC;
     }
-
+    private final List<Integer> subTasksID = new ArrayList<>();
+    private LocalDateTime endTime;
     public List<Integer> getSubTasksID() {
         return subTasksID;
     }
@@ -41,7 +42,7 @@ public class EpicTask extends Task {
     @Override
     public String toString() {
         return getId() + "," + type + "," + getName() + "," + getStatus() + "," + getDescription() + "," +
-                (getStartTime() != null ? getStartTime().format(formatter) : "") + "," +
+                (getStartTime() != null ? getStartTime().format(DateTimeFormatter.ofPattern("dd.MM.yyyy|HH:mm")) : "") + "," +
                 (getTaskDuration() != null ? getTaskDuration().toMinutes() : "") +  ',';
     }
 

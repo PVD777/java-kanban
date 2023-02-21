@@ -13,24 +13,41 @@ public class Task {
     private String name;
     private String description;
     private TaskStatus status;
-    private final TaskType type = TaskType.TASK;
+    protected TaskType type;
     private Duration duration;
     private LocalDateTime startTime;
-    protected DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy|HH:mm");
+
 
     public Task(String name, String description) {
+        type = TaskType.TASK;
         this.name = name;
         this.description = description;
         status = TaskStatus.NEW;
     }
 
-    public Task(String name, String description, String startTime, long durationInMinutes) {
+    public Task(String name, String description, String startTime, Long durationInMinutes) {
+        type = TaskType.TASK;
         this.name = name;
         this.description = description;
         status = TaskStatus.NEW;
-        this.startTime = LocalDateTime.parse(startTime, formatter);
-        this.duration = Duration.ofMinutes(durationInMinutes);
+        if (startTime == null) this.startTime = null;
+        else this.startTime = LocalDateTime.parse(startTime, DateTimeFormatter.ofPattern("dd.MM.yyyy|HH:mm"));
+        if (durationInMinutes == null) duration = null;
+        else duration = Duration.ofMinutes(durationInMinutes);
     }
+
+    public Task(String name, String description, LocalDateTime startTime, Long durationInMinutes) {
+        type = TaskType.TASK;
+        this.name = name;
+        this.description = description;
+        status = TaskStatus.NEW;
+        if (startTime == null) this.startTime = null;
+        else this.startTime = startTime;
+        if (durationInMinutes == null) duration = null;
+        else duration = Duration.ofMinutes(durationInMinutes);
+    }
+
+
 
     public int getId() {
         return id;
@@ -87,7 +104,7 @@ public class Task {
     @Override
     public String toString() {
         return  id + "," + type + "," + name + "," + status + "," + description + ',' +
-                (startTime != null ? startTime.format(formatter): "") +
+                (startTime != null ? startTime.format(DateTimeFormatter.ofPattern("dd.MM.yyyy|HH:mm")): "") +
                 "," + (duration != null ? duration.toMinutes() : "") + ",";
     }
 
@@ -96,12 +113,12 @@ public class Task {
         if (this == o) return true;
         if (!(o instanceof Task)) return false;
         Task task = (Task) o;
-        return id == task.id && Objects.equals(name, task.name) && Objects.equals(description, task.description) && status == task.status && type == task.type && Objects.equals(duration, task.duration) && Objects.equals(startTime, task.startTime) && Objects.equals(formatter, task.formatter);
+        return id == task.id && Objects.equals(name, task.name) && Objects.equals(description, task.description) && status == task.status && type == task.type && Objects.equals(duration, task.duration) && Objects.equals(startTime, task.startTime);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, description, status, type, duration, startTime, formatter);
+        return Objects.hash(id, name, description, status, type, duration, startTime);
     }
 }
 

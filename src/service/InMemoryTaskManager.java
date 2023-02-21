@@ -237,7 +237,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     private void setEpicTime(EpicTask task) {
-        if (task.getSubTasksID().isEmpty()) {
+        if (task.getSubTasksID() == null || task.getSubTasksID().isEmpty()) {
             task.setStartTime(null);
             task.setTaskDuration(null);
             task.setEndTime(null);
@@ -312,7 +312,20 @@ public class InMemoryTaskManager implements TaskManager {
         return historyManager.getHistory();
     }
 
+    public int getCounterId() {
+        return counterId;
+    }
 
+    public HashMap<Integer, Task> getTasks() {
+        return tasks;
+    }
 
+    public HashMap<Integer, EpicTask> getEpicTasks() {
+        return epicTasks;
+    }
+
+    public HashMap<Integer, SubTask> getSubTasks() {
+        return subTasks;
+    }
 
 }

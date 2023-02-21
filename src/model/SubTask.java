@@ -2,17 +2,26 @@ package model;
 
 import service.TaskType;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 public class SubTask extends Task {
     private int epicId;
-    final TaskType type = TaskType.SUBTASK;
 
     public SubTask(String name, String description, EpicTask task) {
         super(name, description);
+        type = TaskType.SUBTASK;
         epicId = task.getId();
     }
 
-    public SubTask(String name, String description, String startTime, long duration, EpicTask task) {
+    public SubTask(String name, String description, String startTime, Long duration, EpicTask task) {
         super(name, description, startTime, duration);
+        type = TaskType.SUBTASK;
+        epicId = task.getId();
+    }
+    public SubTask(String name, String description, LocalDateTime startTime, Long duration, EpicTask task) {
+        super(name, description, startTime, duration);
+        type = TaskType.SUBTASK;
         epicId = task.getId();
     }
 
@@ -27,7 +36,7 @@ public class SubTask extends Task {
     @Override
     public String toString() {
         return getId() + "," + type + "," + getName() + "," + getStatus() + "," + getDescription() + "," +
-                (getStartTime() != null ? getStartTime().format(formatter) : "") +
+                (getStartTime() != null ? getStartTime().format(DateTimeFormatter.ofPattern("dd.MM.yyyy|HH:mm")) : "") + "," +
                 (getTaskDuration() != null ? getTaskDuration().toMinutes() : "") + ',' + epicId;
     }
 
