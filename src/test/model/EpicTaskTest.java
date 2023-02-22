@@ -1,4 +1,4 @@
-package Test;
+package test.model;
 
 import model.EpicTask;
 import model.SubTask;
